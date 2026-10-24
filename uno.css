@@ -1,0 +1,328 @@
+:root {
+    --bg-page: #0b0f19;
+    --bg-card-glass: rgba(22, 30, 46, 0.85);
+    --texto-primario: #f3f4f6;
+    --texto-secundario: #9ca3af;
+    --cor-vermelho: #ef4444;
+    --cor-azul: #3b82f6;
+    --cor-verde: #10b981;
+    --cor-amarelo: #fbbf24;
+    --cor-preto: #1e293b;
+    
+    /* Mobile first */
+    --card-w: clamp(70px, 18vw, 150px);
+    --card-h: clamp(105px, 27vw, 200px);
+}
+
+/* ESCONDE A SCROLLBAR DO MUNDO INTEIRO */
+::-webkit-scrollbar { display: none; }
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none; 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* Mantive a sua alteração aqui! */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+    background: var(--bg-page);
+    color: var(--texto-primario);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    padding-top: 20px; 
+    overflow-x: hidden;
+}
+
+.game-viewport { 
+    width: 100%; 
+    max-width: min(600px, 95vw); 
+    transition: max-width 0.3s; 
+}
+
+.glass-card {
+    background: var(--bg-card-glass);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: clamp(15px, 4vw, 32px);
+    max-width: 600px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px);
+    justify-self: center;
+    text-align: center;
+}
+
+.escondido { display: none !important; }
+
+/* ESSA CLASSE É A MÁGICA PARA AS ANIMAÇÕES NÃO BLOQUEAREM O TOQUE */
+.pointer-none { pointer-events: none !important; }
+
+h1 { font-size: clamp(1.8rem, 6vw, 2.5rem); color: #fff; margin-bottom: 4px; }
+h2 { font-size: clamp(1rem, 4vw, 1.2rem); color: var(--texto-secundario); margin-bottom: 20px; font-weight: normal; }
+.subtext { font-size: 0.9rem; color: var(--texto-secundario); margin-bottom: 12px; line-height: 1.4; }
+.label-jogador { display: block; text-align: left; font-size: 0.9rem; color: var(--texto-secundario); margin-bottom: 6px; margin-top: 15px; }
+
+input[type="text"], .input-select { 
+    width: 100%; 
+    padding: 14px; 
+    background: #0f172a; 
+    border: 1px solid #334155; 
+    color: #fff; 
+    border-radius: 10px; 
+    font-size: 1rem; 
+    outline: none; 
+    user-select: text; 
+}
+
+.btn-fenda { 
+    background: linear-gradient(135deg, #ef4444, #b91c1c); 
+    color: #fff; 
+    border: none; 
+    padding: 14px 20px; 
+    font-weight: 800; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    width: 100%; 
+    font-size: 1rem; 
+    margin-top: 20px; 
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); 
+    transition: transform 0.2s; 
+}
+
+.btn-fenda:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-secundario { background: transparent; border: 2px solid #3b82f6; color: #3b82f6; box-shadow: none; }
+.btn-danger { background: transparent; border: 1px solid #ef4444; color: #ef4444; box-shadow: none; }
+
+.divisor { display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--texto-secundario); }
+.divisor::before, .divisor::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.divisor span { padding: 0 10px; font-size: 0.8rem; font-weight: bold; }
+
+.codigo-sala-display { 
+    font-size: 3rem; 
+    font-weight: 900; 
+    letter-spacing: 10px; 
+    color: #fff; 
+    background: #0f172a; 
+    padding: 15px; 
+    border-radius: 12px; 
+    border: 2px dashed #3b82f6; 
+    margin: 20px 0; 
+}
+
+.loader { width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* TABULEIRO */
+.topo-jogo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px; }
+.btn-sair-mini { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+.aviso-sistema { background: rgba(239, 68, 68, 0.9); color: #fff; padding: 10px; text-align: center; border-radius: 10px; font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; animation: slideDown 0.3s ease; }
+@keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.oponentes-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+.oponente-card { background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; border: 2px solid transparent; transition: 0.3s; }
+.oponente-card.turno-ativo { border-color: #10b981; background: rgba(16, 185, 129, 0.2); box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); transform: scale(1.05); }
+.oponente-card.offline { opacity: 0.5; filter: grayscale(100%); border-color: #ef4444; }
+
+.mesa-central { display: flex; justify-content: center; align-items: center; gap: 40px; height: 180px; margin-bottom: 20px; }
+.monte-compra, .monte-descarte { position: relative; width: var(--card-w); height: var(--card-h); }
+
+.carta-verso { width: 100%; height: 100%; background: linear-gradient(135deg, #1e293b, #0f172a); border: 3px solid #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
+.carta-verso::after { content: 'UNO'; color: #ef4444; font-weight: 900; font-style: italic; transform: rotate(-15deg); font-size: 1.5rem; }
+.monte-compra { cursor: pointer; transition: transform 0.2s; }
+.monte-compra:hover { transform: scale(1.05); }
+.deck-count { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; color: var(--texto-secundario); font-weight: bold; }
+
+.carta-uno { 
+    width: var(--card-w); height: var(--card-h); border-radius: 12px; border: 3px solid #fff; 
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 8px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; flex-shrink: 0; transition: transform 0.2s;
+    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.carta-uno * { pointer-events: none; }
+
+.cor-vermelho { background: var(--cor-vermelho); }
+.cor-azul { background: var(--cor-azul); }
+.cor-verde { background: var(--cor-verde); }
+.cor-amarelo { background: var(--cor-amarelo); }
+.cor-preto { background: var(--cor-preto); }
+
+.carta-uno .valor-canto { font-size: 1.2rem; font-weight: 900; color: #fff; align-self: flex-start; text-shadow: 2px 2px 0 #000; }
+.carta-uno .valor-centro { font-size: 3rem; font-weight: 900; color: #fff; text-shadow: 3px 3px 0 #000; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.monte-descarte { transition: transform 0.2s, box-shadow 0.2s; border-radius: 12px; }
+.monte-descarte.zona-ativa { transform: scale(1.15); box-shadow: 0 0 50px var(--cor-amarelo); border: 2px dashed var(--cor-amarelo); }
+
+.meu-painel { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.aviso-turno { padding: 8px 25px; border-radius: 20px; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+.bg-verde { background: #10b981; color: #fff; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
+.bg-vermelho { background: #ef4444; color: #fff; }
+
+.btn-passar { background: #3b82f6; color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; animation: popIn 0.3s; }
+.btn-uno { background: #ef4444; color: #fff; border: 2px solid #fff; padding: 8px 20px; border-radius: 20px; font-weight: 900; font-size: 1.2rem; cursor: pointer; animation: pulseUno 0.8s infinite alternate; box-shadow: 0 0 20px #ef4444; }
+
+@keyframes pulseUno { from { transform: scale(1); } to { transform: scale(1.1); background: #b91c1c; } }
+
+/* MÃO DO JOGADOR */
+.minha-mao-container {
+    background: rgba(15, 23, 42, 0.8); 
+    border-radius: 20px 20px 0 0;
+    padding: 20px 10px; 
+    min-height: 180px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    overflow-x: auto; 
+    overflow-y: hidden;
+}
+
+.minha-mao { 
+    display: flex; 
+    flex-wrap: nowrap; 
+    justify-content: safe center; 
+    align-items: center;
+    padding: 20px 50px 0 50px; 
+}
+
+.minha-mao .carta-uno { margin-left: -35px; cursor: pointer; transform-origin: bottom center; transition: transform 0.2s, margin 0.2s; }
+.minha-mao .carta-uno:first-child { margin-left: 0; }
+.minha-mao .carta-uno:hover { transform: translateY(-20px) scale(1.1); margin-right: 15px; z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.8); }
+
+.carta-uno.bloqueada { filter: grayscale(100%) brightness(0.4); cursor: not-allowed; pointer-events: none; }
+
+#drag-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+#drag-layer .carta-uno { pointer-events: auto; cursor: grabbing; }
+
+/* ==========================================
+   NOVAS ANIMAÇÕES E REAÇÕES
+   ========================================== */
+
+/* BARRA DE EMOJIS */
+.barra-reacoes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 15px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-reacao {
+    background: transparent;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-reacao:hover { transform: scale(1.3); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+.btn-reacao:active { transform: scale(0.9); }
+
+/* ANIMAÇÃO GIGANTE DO UNO (Não bloqueia clique) */
+#uno-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.uno-text-anim {
+    font-size: clamp(5rem, 20vw, 15rem);
+    font-weight: 900;
+    color: #ef4444;
+    text-shadow: 0 0 30px #ef4444, 0 0 60px #fff, 5px 5px 0 #000;
+    text-align: center;
+    line-height: 0.8;
+    animation: unoPop 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.uno-nome {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    color: #fff;
+    display: block;
+    margin-top: 20px;
+    text-shadow: 2px 2px 10px #000;
+    letter-spacing: 5px;
+}
+
+@keyframes unoPop {
+    0% { transform: scale(0.1) rotate(-20deg); opacity: 0; }
+    20% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+    30% { transform: scale(1) rotate(0deg); opacity: 1; }
+    80% { transform: scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: scale(1.5) rotate(0deg); opacity: 0; }
+}
+
+/* EMOJIS FLUTUANTES */
+#emoji-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.emoji-flutuante {
+    position: absolute;
+    font-size: 4rem;
+    animation: floatUp 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    20% { transform: translateY(-50px) scale(1.2); opacity: 1; }
+    100% { transform: translateY(-300px) scale(1); opacity: 0; }
+}
+
+/* MODAIS E SHAKES */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+.modal-content { background: #1e293b; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.modal-content h3 { margin-bottom: 20px; color: #fff; font-size: 1.5rem; }
+.cores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.btn-cor { width: 80px; height: 80px; border-radius: 15px; border: 3px solid #fff; cursor: pointer; transition: transform 0.2s; }
+.btn-cor:hover { transform: scale(1.1); }
+
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-15px) rotate(-5deg); } 75% { transform: translateX(15px) rotate(5deg); } }
+.erro-shake { animation: shake 0.4s ease-in-out !important; border-color: #ef4444 !important; }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+#tela-vitoria { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* RESPONSIVIDADE PC E MOBILE */
+@media (min-width: 800px) {
+    .game-viewport { max-width: 900px; } 
+    :root {
+        --card-w: 130px; 
+        --card-h: 190px;
+    }
+    .mesa-central { height: 300px; gap: 80px; } 
+    .minha-mao-container { min-height: 250px; padding: 30px 20px; }
+    .minha-mao { padding: 30px 100px 0 100px; } 
+    .carta-uno .valor-centro { font-size: 4.5rem; }
+    .carta-uno .valor-canto { font-size: 1.5rem; }
+    .minha-mao .carta-uno { margin-left: -45px; } 
+}
+
+@media (max-width: 600px) {
+    body { padding-top: 10px; }
+    .mesa-central { height: 140px; margin-bottom: 10px; gap: 20px; }
+    .minha-mao-container { min-height: 150px; }
+    .minha-mao { padding: 20px 40px 0 40px; }
+    .minha-mao .carta-uno { margin-left: -40px; }
+}

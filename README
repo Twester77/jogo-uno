@@ -1,0 +1,43 @@
+# 🃏 Uno Local: Multiplayer via Wi-Fi
+
+Um jogo de Uno multiplayer local que roda diretamente no navegador, conectando múltiplos jogadores na mesma rede Wi-Fi sem precisar de internet! Criado para ser leve, portátil (roda de um Pen Drive) e altamente interativo com gestos de arrastar e soltar (Swipe).
+
+![Status do Projeto](https://img.shields.io/badge/Status-Conclu%C3%ADdo-success)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+
+## 🎯 Sobre o Projeto
+Este projeto nasceu da necessidade de criar uma experiência multiplayer em rede local (LAN) para feiras de tecnologia, sem depender de internet ou servidores complexos. O backend gerencia o estado do jogo em arquivos JSON através do PHP, enquanto o frontend utiliza JavaScript Vanilla puro para a interface e as mecânicas de Swipe.
+
+## ✨ Funcionalidades
+- **Multiplayer Local:** Crie uma sala e convide seus amigos via QR Code ou IP local (até 4 jogadores).
+- **Motor de Swipe (Drag & Drop):** Arraste as cartas da sua mão direto para o monte central. Otimizado para toque (mobile) e mouse (PC).
+- **Reações em Tempo Real:** Mande emojis (😂, 😡, 😭, 😎) que flutuam na tela dos outros jogadores em tempo real.
+- **Animação Automática de "UNO!":** Quando alguém fica com uma carta, um grito visual gigante toma a tela, sem travar o toque.
+- **Regras Oficiais + Customizações:** Inclui as regras de rebater +2 com +2 e +4 com +2/+4, além do botão "Passar a Vez" para quando a carta comprada não servir.
+- **Sistema Anti-Queda (Heartbeat):** Se um jogador fechar a aba ou perder a conexão, o servidor o marca como inativo e pula o turno automaticamente após 20 segundos.
+- **PWA Ready:** Pode ser instalado no celular como um aplicativo nativo.
+
+## 🛠️ Tecnologias Utilizadas
+- **Backend:** PHP 8+ (Gerenciamento de estado via arquivos JSON, sem banco de dados).
+- **Frontend:** Vanilla JS (Pointer Events API para Swipe).
+- **Estilização:** CSS3 (Glassmorphism, Flexbox, Animações Keyframe).
+- **Design:** Foco em Mobile-First com responsividade fluida.
+
+## 🚀 Como Executar Localmente (Modo Portátil)
+
+Para rodar o jogo de um Pen Drive sem instalar nada (como no modo feira):
+1. Baixe o PHP portátil (ou copie a pasta `php` do seu XAMPP).
+2. Coloque a pasta `php` na raiz deste projeto.
+3. Crie um arquivo `iniciar.bat` (Windows) com o código:
+   ```bat
+   @echo off
+   title Servidor UNO Local
+   cd /d "%~dp0"
+   if exist php\php.exe (
+       php\php.exe -S 0.0.0.0:8001
+   ) else (
+       echo ERRO: A pasta 'php' nao foi encontrada.
+   )
+   pause

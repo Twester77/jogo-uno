@@ -1,0 +1,12 @@
+# Pasta do servidor PHP portátil
+php/
+
+# Scripts de inicialização locais
+iniciar.bat
+
+# Arquivos de estado do jogo (salas JSON geradas em tempo real)
+salas/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
